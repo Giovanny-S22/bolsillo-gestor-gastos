@@ -1,0 +1,380 @@
+/* Gastos: */
+.gastos { max-width: 1180px; }
+
+.gasto-form {
+  padding: 26px 28px;
+  margin-bottom: 24px;
+}
+
+.gasto-titulo {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+
+.gasto-titulo h2,
+.historial h2 {
+  margin: 0 0 4px;
+  font: 700 1.2rem var(--f-titulo);
+}
+
+.gasto-titulo p,
+.historial-header p {
+  margin: 0;
+  color: var(--suave);
+  font-size: .86rem;
+}
+
+.gasto-icono {
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: rgba(14,90,88,.09);
+  color: var(--primario);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.gasto-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 20px;
+}
+
+.campo-completo {
+  grid-column: 1 / -1;
+}
+
+.campo label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: var(--tinta);
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.campo label span {
+  color: var(--primario);
+  font-size: .95rem;
+}
+
+.campo label em {
+  margin-left: 2px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: var(--fondo);
+  color: var(--suave);
+  font-size: .68rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.gasto-campo input,
+.gasto-campo select {
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1px solid var(--linea);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--tinta);
+  font: inherit;
+}
+
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  border-color: var(--primario);
+  box-shadow: 0 0 0 3px rgba(14,90,88,.08);
+}
+
+.monto-input {
+  position: relative;
+}
+
+.monto-input > span {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--suave);
+  font-weight: 700;
+}
+
+.monto-input input {
+  padding-left: 31px;
+}
+
+.gasto-boton {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.gasto-boton .boton {
+  min-height: 44px;
+  padding: 11px 19px;
+}
+
+.boton-secundario {
+  background: transparent;
+  color: var(--primario);
+  border: 1px solid var(--linea);
+  text-decoration: none;
+}
+
+.boton-secundario:hover {
+  background: var(--fondo);
+}
+
+
+.historial {
+  padding: 26px 28px;
+}
+
+.historial-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.historial-titulo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.historial-icono {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 11px;
+  background: rgba(14,90,88,.09);
+  color: var(--primario);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.contador {
+  padding: 7px 11px;
+  border-radius: 20px;
+  background: rgba(14,90,88,.08);
+  color: var(--primario);
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.lista-gastos {
+  width: 100%;
+}
+
+.gasto-item {
+  display: grid;
+  grid-template-columns: 55px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 0;
+  border-top: 1px solid var(--linea);
+}
+
+.gasto-item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.gasto-item:last-child {
+  padding-bottom: 0;
+}
+
+.gasto-fecha {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: var(--fondo);
+}
+
+.gasto-fecha strong {
+  font: 700 1rem var(--f-titulo);
+}
+
+.gasto-fecha small {
+  color: var(--suave);
+  font-size: .62rem;
+  font-weight: 700;
+}
+
+.gasto-info {
+  min-width: 0;
+}
+
+.gasto-tipo {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: rgba(14,90,88,.09);
+  color: var(--primario);
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.gasto-info p {
+  margin: 5px 0 3px;
+  color: var(--tinta);
+  font-size: .84rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gasto-info small {
+  color: var(--suave);
+  font-size: .7rem;
+}
+
+.gasto-final {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.gasto-final > strong {
+  font: 700 1rem var(--f-titulo);
+}
+
+.gasto-final > div {
+  display: flex;
+  gap: 10px;
+}
+
+.gasto-final a,
+.gasto-final button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gasto-final a {
+  color: var(--primario);
+}
+
+.gasto-final button {
+  color: var(--alerta);
+}
+
+.gasto-final form {
+  margin: 0;
+}
+
+
+.mensaje {
+  margin-bottom: 16px;
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: .84rem;
+  font-weight: 600;
+}
+
+.mensaje-exito {
+  background: rgba(14,90,88,.08);
+  color: var(--primario);
+  border: 1px solid rgba(14,90,88,.14);
+}
+
+.mensaje-error {
+  background: rgba(200,68,59,.08);
+  color: var(--alerta);
+  border: 1px solid rgba(200,68,59,.14);
+}
+
+.estado-vacio {
+  padding: 32px 15px;
+  text-align: center;
+}
+
+.estado-icono {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 11px;
+  border-radius: 50%;
+  background: rgba(14,90,88,.09);
+  color: var(--primario);
+  font-weight: 800;
+}
+
+.estado-vacio h3 {
+  margin: 0 0 5px;
+  font: 700 1rem var(--f-titulo);
+}
+
+.estado-vacio p {
+  max-width: 400px;
+  margin: 0 auto;
+  color: var(--suave);
+  font-size: .82rem;
+}
+@media (max-width: 720px) {
+
+  .gasto-form,
+  .historial {
+    padding: 20px;
+  }
+
+  .gasto-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-completo {
+    grid-column: auto;
+  }
+
+  .gasto-boton {
+    justify-content: stretch;
+  }
+
+  .gasto-boton .boton {
+    flex: 1;
+  }
+
+}
+
+@media (max-width: 560px) {
+
+  .historial-header {
+    align-items: flex-start;
+  }
+
+  .gasto-item {
+    grid-template-columns: 48px minmax(0,1fr);
+    gap: 11px;
+  }
+
+  .gasto-fecha {
+    width: 45px;
+    height: 45px;
+  }
+
+  .gasto-final {
+    grid-column: 2;
+    align-items: flex-start;
+  }
+
+  .gasto-info p {
+    white-space: normal;
+  }
+
+}
