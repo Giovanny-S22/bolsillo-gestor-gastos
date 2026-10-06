@@ -7,69 +7,107 @@ class DashboardController extends Controller
     {
         $idUsuario = $this->requireAuth();
         $resumen   = new Resumen();
-
         $hoy       = date('Y-m-d');
-        $inicioMes = date('Y-m-01');
-        $finMes    = date('Y-m-t');
+        $nombre    = explode(' ', (string) $_SESSION['usuario_nombre'])[0];
 
-        $totalMes       = $resumen->totalEntre($idUsuario, $inicioMes, $finMes);
-        $totalHoy       = $resumen->totalEntre($idUsuario, $hoy, $hoy);
-        $promedioDiario = $totalMes / (int) date('j');
+        $presupuestoBd = $resumen->presupuestoActivo($idUsuario);
 
-        $porTipo  = $resumen->porTipo($idUsuario, $inicioMes, $finMes);
-        $ultimos  = $resumen->ultimos($idUsuario, 6);
+        if (!$presupuestoBd) {
+            $this->view('dashboard/index', ['nombre' => $nombre, 'presupuesto' => null]);
+            return;
+        }
+
+        // Una sola consulta: todos los gastos del presupuesto activo
+        $gastos = $resumen->gastosDelPresupuesto($idUsuario, (int) $presupuestoBd['id']);
+
+        // Un solo recorrido: aquí se hacen las sumas y conteos
+        $gastado   = 0.0;
+        $numGastos = 0;
+        $porTipo   = [];   
+        $porDia    = [];   
+
+        foreach ($gastos as $g) {
+            $monto = (float) $g['monto'];
+
+            $gastado += $monto;
+            $numGastos++;
+
+            $porTipo[$g['tipo_gasto']] = ($porTipo[$g['tipo_gasto']] ?? 0.0) + $monto;
+            $porDia[$g['fecha']]       = ($porDia[$g['fecha']] ?? 0.0) + $monto;
+        }
+
+        arsort($porTipo); // de mayor a menor
 
         // Últimos 7 días (incluye los días sin gastos con total 0)
-        $totalesDia = $resumen->totalesPorDia($idUsuario, date('Y-m-d', strtotime('-6 days')), $hoy);
-        $dias = [];
+        $dias    = [];
+        $hayDias = false;
         for ($i = 6; $i >= 0; $i--) {
-            $fecha  = date('Y-m-d', strtotime("-$i days"));
+            $fecha = date('Y-m-d', strtotime("-$i days"));
+            $total = $porDia[$fecha] ?? 0.0;
+            if ($total > 0) {
+                $hayDias = true;
+            }
             $dias[] = [
                 'fecha'    => $fecha,
                 'etiqueta' => nombre_dia_corto($fecha),
-                'total'    => (float) ($totalesDia[$fecha] ?? 0),
+                'total'    => $total,
                 'hoy'      => $fecha === $hoy,
             ];
         }
 
-        $presupuesto = $this->calcularPresupuesto($resumen->presupuestoActivo($idUsuario, $hoy), $hoy);
-
         $this->view('dashboard/index', [
-            'nombre'         => explode(' ', (string) $_SESSION['usuario_nombre'])[0],
-            'hoy'            => $hoy,
-            'totalMes'       => $totalMes,
-            'totalHoy'       => $totalHoy,
-            'promedioDiario' => $promedioDiario,
-            'porTipo'        => $porTipo,
-            'ultimos'        => $ultimos,
-            'dias'           => $dias,
-            'presupuesto'    => $presupuesto,
+            'nombre'      => $nombre,
+            'hoy'         => $hoy,
+            'totalHoy'    => $porDia[$hoy] ?? 0.0,
+            'porTipo'     => $porTipo,
+            'ultimos'     => array_slice($gastos, 0, 6), // ya vienen ordenados del más reciente
+            'dias'        => $dias,
+            'hayDias'     => $hayDias,
+            'presupuesto' => $this->calcularPresupuesto($presupuestoBd, $gastado, $numGastos, $hoy),
         ]);
     }
 
-    /** Agrega al presupuesto los cálculos que muestra el dashboard. */
-    private function calcularPresupuesto(?array $p, string $hoy): ?array
+    private function calcularPresupuesto(array $p, float $gastado, int $numGastos, string $hoy): array
     {
-        if (!$p) {
-            return null;
-        }
-
-        $limite    = (float) $p['limite'];
-        $gastado   = (float) $p['gastado'];
-        $restante  = $limite - $gastado;
+        $limite     = (float) $p['limite'];
+        $restante   = $limite - $gastado;
         $porcentaje = $limite > 0 ? (int) round($gastado / $limite * 100) : 0;
 
-        $diferencia     = (new DateTime($hoy))->diff(new DateTime($p['fecha_fin']));
-        $diasRestantes  = max(1, $diferencia->days + 1); // cuenta hoy
+        $inicio = $p['fecha_inicio'];
+        $fin    = $p['fecha_fin'];
+
+        // Estado del plazo y días (los 'Y-m-d' se pueden comparar como texto)
+        if ($hoy > $fin) {
+            $plazo         = 'vencido';
+            $diasRestantes = 0;
+            $transcurridos = $this->diasEntre($inicio, $fin);
+        } elseif ($hoy < $inicio) {
+            $plazo         = 'proximo';
+            $diasRestantes = $this->diasEntre($inicio, $fin);
+            $transcurridos = 0;
+        } else {
+            $plazo         = 'vigente';
+            $diasRestantes = $this->diasEntre($hoy, $fin);     
+            $transcurridos = $this->diasEntre($inicio, $hoy);  
+        }
 
         return $p + [
             'limite_num'     => $limite,
             'gastado_num'    => $gastado,
             'restante'       => $restante,
             'porcentaje'     => $porcentaje,
+            'plazo'          => $plazo,
             'dias_restantes' => $diasRestantes,
-            'por_dia'        => $restante > 0 ? $restante / $diasRestantes : 0,
+            'num_gastos'     => $numGastos,
+            'promedio'       => $transcurridos > 0 ? $gastado / $transcurridos : 0,
+            'por_dia'        => ($restante > 0 && $diasRestantes > 0) ? $restante / $diasRestantes : 0,
             'estado'         => $porcentaje >= 100 ? 'excedido' : ($porcentaje >= 80 ? 'alerta' : 'normal'),
         ];
+    }
+
+    /** Cantidad de días entre dos fechas, contando ambos extremos. Requiere $desde <= $hasta. */
+    private function diasEntre(string $desde, string $hasta): int
+    {
+        return (new DateTimeImmutable($desde))->diff(new DateTimeImmutable($hasta))->days + 1;
     }
 }

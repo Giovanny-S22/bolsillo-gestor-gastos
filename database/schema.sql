@@ -4,6 +4,7 @@ CREATE DATABASE IF NOT EXISTS gastos_app
 
 USE gastos_app;
 
+
 CREATE TABLE IF NOT EXISTS usuarios (
   id             INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   nombre         VARCHAR(80)   NOT NULL,
@@ -14,6 +15,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
   UNIQUE KEY uq_usuarios_email (email)
 ) ENGINE=InnoDB;
 
+
 CREATE TABLE IF NOT EXISTS presupuestos (
   id            INT UNSIGNED   NOT NULL AUTO_INCREMENT,
   id_usuario    INT UNSIGNED   NOT NULL,
@@ -21,14 +23,17 @@ CREATE TABLE IF NOT EXISTS presupuestos (
   fecha_inicio  DATE           NOT NULL,
   fecha_fin     DATE           NOT NULL,
   limite        DECIMAL(12,2)  NOT NULL,           -- dinero disponible para gastar en el plazo
+  activo        TINYINT(1)     NOT NULL DEFAULT 0, -- 1 = activo, 0 = inactivo
   creado_en     TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  KEY idx_presupuestos_usuario_fechas (id_usuario, fecha_inicio, fecha_fin),
+  KEY idx_presupuestos_usuario_activo (id_usuario, activo),
   CONSTRAINT fk_presupuestos_usuario
     FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE,
   CONSTRAINT chk_presupuestos_fechas CHECK (fecha_fin >= fecha_inicio),
-  CONSTRAINT chk_presupuestos_limite CHECK (limite > 0)
+  CONSTRAINT chk_presupuestos_limite CHECK (limite > 0),
+  CONSTRAINT chk_presupuestos_activo CHECK (activo IN (0, 1))
 ) ENGINE=InnoDB;
+
 
 CREATE TABLE IF NOT EXISTS gastos (
   id              INT UNSIGNED   NOT NULL AUTO_INCREMENT,
@@ -41,7 +46,7 @@ CREATE TABLE IF NOT EXISTS gastos (
   creado_en       TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   KEY idx_gastos_usuario_fecha (id_usuario, fecha),
-  KEY idx_gastos_presupuesto (id_presupuesto),
+  KEY idx_gastos_presupuesto_fecha (id_presupuesto, fecha),
   CONSTRAINT fk_gastos_usuario
     FOREIGN KEY (id_usuario) REFERENCES usuarios (id) ON DELETE CASCADE,
   CONSTRAINT fk_gastos_presupuesto

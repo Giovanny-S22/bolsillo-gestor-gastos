@@ -79,7 +79,7 @@ function fecha_larga(?int $ts = null): string
     return $dias[(int) date('w', $ts)] . ', ' . (int) date('j', $ts) . ' de ' . $meses[(int) date('n', $ts) - 1];
 }
 
-/** '2026-10-01' => '1 oct' */
+
 function fecha_corta(string $fecha): string
 {
     $meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
@@ -88,7 +88,7 @@ function fecha_corta(string $fecha): string
     return (int) date('j', $ts) . ' ' . $meses[(int) date('n', $ts) - 1];
 }
 
-/** '2026-10-01' => 'jue' */
+
 function nombre_dia_corto(string $fecha): string
 {
     $dias = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
