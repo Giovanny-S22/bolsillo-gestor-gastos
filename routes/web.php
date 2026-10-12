@@ -18,6 +18,10 @@ return [
     'POST /gastos/eliminar'   => [GastoController::class, 'eliminar'],
 
     // ---- Sección GESTIONAR PRESUPUESTO ----
-    // 'GET /presupuesto'     => [PresupuestoController::class, 'index'],
-    // 'POST /presupuesto'    => [PresupuestoController::class, 'guardar'],
+    'GET /presupuesto'             => [PresupuestoController::class, 'index'],
+    'POST /presupuesto'            => [PresupuestoController::class, 'guardar'],
+    'POST /presupuesto/activar'    => [PresupuestoController::class, 'activar'],
+    'GET /presupuesto/editar'      => [PresupuestoController::class, 'editar'],
+    'POST /presupuesto/actualizar' => [PresupuestoController::class, 'actualizar'],
+    'POST /presupuesto/eliminar'   => [PresupuestoController::class, 'eliminar'],
 ];
