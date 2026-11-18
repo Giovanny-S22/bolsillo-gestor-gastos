@@ -22,10 +22,16 @@ class Resumen extends Model
     public function gastosDelPresupuesto(int $idUsuario, int $idPresupuesto): array
     {
         $st = $this->db->prepare(
-            'SELECT id, fecha, monto, tipo_gasto, descripcion
-             FROM gastos
-             WHERE id_usuario = ? AND id_presupuesto = ?
-             ORDER BY fecha DESC, id DESC'
+            'SELECT g.id,
+                    g.fecha,
+                    g.monto,
+                    c.nombre AS tipo_gasto,
+                    g.descripcion
+            FROM gastos g
+            INNER JOIN categorias c ON c.id = g.id_categoria
+            WHERE g.id_usuario = ?
+              AND g.id_presupuesto = ?
+            ORDER BY g.fecha DESC, g.id DESC'
         );
         $st->execute([$idUsuario, $idPresupuesto]);
 

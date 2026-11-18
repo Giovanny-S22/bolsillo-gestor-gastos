@@ -3,16 +3,6 @@ $titulo = 'Editar gasto';
 $activo = 'gastos';
 $css = 'gastos.css';
 
-$categorias = [
-    'Comida',
-    'Transporte',
-    'Mercado',
-    'Servicios',
-    'Ocio',
-    'Salud',
-    'Educación',
-    'Otros'
-];
 
 require ROOT_PATH . '/app/views/partials/head.php';
 ?>
@@ -65,7 +55,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
                 <div class="gasto-grid">
 
-                    <div class="campo">
+                    <div class="campo gasto-campo">
                         <label for="fecha">
                             <span class="icono" data-icon="calendar"></span>
                             Fecha
@@ -82,7 +72,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
                     </div>
 
 
-                    <div class="campo">
+                    <div class="campo gasto-campo">
 
                         <label for="monto">
                             <span>$</span>
@@ -106,40 +96,41 @@ require ROOT_PATH . '/app/views/partials/head.php';
                     </div>
 
 
-                    <div class="campo">
-
-                        <label for="tipo_gasto">
+                    <div class="campo gasto-campo">
+                        <label for="id_categoria">
                             <span>◇</span>
                             Categoría
                         </label>
 
                         <select
-                            id="tipo_gasto"
-                            name="tipo_gasto"
+                            id="id_categoria"
+                            name="id_categoria"
                             required
                         >
-
-                            <option value="">
-                                Selecciona una categoría
-                            </option>
-
-                            <?php foreach ($categorias as $categoria): ?>
-
+                            <?php if ((int) $gasto['categoria_activa'] === 0): ?>
                                 <option
-                                    value="<?= e($categoria) ?>"
-                                    <?= $gasto['tipo_gasto'] === $categoria ? 'selected' : '' ?>
+                                    value="<?= (int) $gasto['id_categoria'] ?>"
+                                    selected
+                                    disabled
                                 >
-                                    <?= e($categoria) ?>
+                                    <?= e($gasto['categoria_nombre']) ?> (Deshabilitada)
                                 </option>
-
+                            <?php else: ?>
+                                <option value="">Selecciona una categoría</option>
+                            <?php endif; ?>
+                            <?php foreach ($categorias as $categoria): ?>
+                                <option
+                                    value="<?= (int) $categoria['id'] ?>"
+                                    <?= (int) $categoria['id'] === (int) $gasto['id_categoria'] ? 'selected' : '' ?>
+                                >
+                                    <?= e($categoria['nombre']) ?>
+                                </option>
                             <?php endforeach; ?>
-
                         </select>
-
                     </div>
 
 
-                    <div class="campo">
+                    <div class="campo gasto-campo">
 
                         <label for="id_presupuesto">
                             <span>◎</span>
@@ -172,7 +163,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
                     </div>
 
 
-                    <div class="campo campo-completo">
+                    <div class="campo campo-completo gasto-campo">
 
                         <label for="descripcion">
                             <span>▤</span>

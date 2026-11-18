@@ -9,9 +9,12 @@ class GastoController extends Controller
 
         $gasto = new Gasto();
 
+        $categoria = new Categoria();
+
         $this->view('gastos/index', [
             'gastos' => $gasto->listar($idUsuario),
             'presupuestos' => $gasto->presupuestos($idUsuario),
+            'categorias' => $categoria->listarActivas(),
         ]);
     }
 
@@ -22,7 +25,7 @@ class GastoController extends Controller
 
         $fecha = trim((string) ($_POST['fecha'] ?? ''));
         $monto = (float) ($_POST['monto'] ?? 0);
-        $tipoGasto = trim((string) ($_POST['tipo_gasto'] ?? ''));
+        $idCategoria = (int) ($_POST['id_categoria'] ?? 0);
         $descripcion = trim((string) ($_POST['descripcion'] ?? ''));
 
         $idPresupuesto = $_POST['id_presupuesto'] ?? '';
@@ -31,8 +34,8 @@ class GastoController extends Controller
             : 0;
 
         // validacion por si falta fecha, monto o tipo de gasto
-        if ($fecha === '' || $monto <= 0 || $tipoGasto === '') {
-            flash('error', 'Completa correctamente la fecha, el monto y el tipo de gasto.');
+        if ($fecha === '' || $monto <= 0 || $idCategoria <= 0) {
+            flash('error', 'Completa correctamente la fecha, el monto y la categoría.');
             $this->redirect('gastos');
         }
 
@@ -71,13 +74,20 @@ class GastoController extends Controller
             $this->redirect('gastos');
         }
 
+        $categoria = new Categoria();
+
+        if (!$categoria->estaActiva($idCategoria)) {
+            flash('error', 'La categoría seleccionada no está disponible.');
+            $this->redirect('gastos');
+        }
+
         
         $gasto->crear(
             $idUsuario,
             $idPresupuesto,
             $fecha,
             $monto,
-            $tipoGasto,
+            $idCategoria,
             $descripcion !== '' ? $descripcion : null
         );
 
@@ -108,6 +118,7 @@ class GastoController extends Controller
         $this->view('gastos/editar', [
             'gasto' => $gastoEncontrado,
             'presupuestos' => $gasto->presupuestos($idUsuario),
+            'categorias' => (new Categoria())->listarActivas(),
         ]);
     }
 
@@ -120,7 +131,7 @@ class GastoController extends Controller
 
         $fecha = trim((string) ($_POST['fecha'] ?? ''));
         $monto = (float) ($_POST['monto'] ?? 0);
-        $tipoGasto = trim((string) ($_POST['tipo_gasto'] ?? ''));
+        $idCategoria = (int) ($_POST['id_categoria'] ?? 0);
         $descripcion = trim((string) ($_POST['descripcion'] ?? ''));
 
         $idPresupuesto = (int) ($_POST['id_presupuesto'] ?? 0);
@@ -130,8 +141,8 @@ class GastoController extends Controller
             $this->redirect('gastos');
         }
 
-        if ($fecha === '' || $monto <= 0 || $tipoGasto === '') {
-            flash('error', 'Completa correctamente la fecha, el monto y el tipo de gasto.');
+        if ($fecha === '' || $monto <= 0 || $idCategoria <= 0) {
+            flash('error', 'Completa correctamente la fecha, el monto y la categoría.');
             $this->redirect('gastos');
         }
 
@@ -157,7 +168,9 @@ class GastoController extends Controller
 
         $gasto = new Gasto();
 
-        if (!$gasto->buscarPorId($id, $idUsuario)) {
+        $gastoEncontrado = $gasto->buscarPorId($id, $idUsuario);
+
+        if (!$gastoEncontrado) {
             flash('error', 'El gasto no existe o no tienes permiso para editarlo.');
             $this->redirect('gastos');
         }
@@ -167,13 +180,24 @@ class GastoController extends Controller
             $this->redirect('gastos');
         }
 
+        $categoria = new Categoria();
+
+        $categoriaValida = $categoria->estaActiva($idCategoria);
+
+        $categoriaActual = (int) $gastoEncontrado['id_categoria'];
+
+        if (!$categoriaValida && $idCategoria !== $categoriaActual) {
+            flash('error', 'La categoría seleccionada no está disponible.');
+            $this->redirect('gastos');
+        }
+
         $gasto->actualizar(
             $id,
             $idUsuario,
             $idPresupuesto,
             $fecha,
             $monto,
-            $tipoGasto,
+            $idCategoria,
             $descripcion !== '' ? $descripcion : null
         );
 

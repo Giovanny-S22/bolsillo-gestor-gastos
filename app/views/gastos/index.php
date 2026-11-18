@@ -3,16 +3,6 @@ $titulo = 'Gastos';
 $activo = 'gastos';
 $css = 'gastos.css';
 
-$categorias = [
-    'Comida',
-    'Transporte',
-    'Mercado',
-    'Servicios',
-    'Ocio',
-    'Salud',
-    'Educación',
-    'Otros'
-];
 
 require ROOT_PATH . '/app/views/partials/head.php';
 ?>
@@ -112,25 +102,26 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
 
                         <div class="campo gasto-campo">
-                            <label for="tipo_gasto">
+                            <label for="id_categoria">
                                 <span>◇</span>
                                 Categoría
                             </label>
 
                             <select
-                                id="tipo_gasto"
-                                name="tipo_gasto"
+                                id="id_categoria"
+                                name="id_categoria"
                                 required
                             >
                                 <option value="">Selecciona una categoría</option>
 
                                 <?php foreach ($categorias as $categoria): ?>
-                                    <option value="<?= e($categoria) ?>">
-                                        <?= e($categoria) ?>
+                                    <option value="<?= (int) $categoria['id'] ?>">
+                                        <?= e($categoria['nombre']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
+
 
 
                         <div class="campo gasto-campo">
@@ -242,7 +233,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
                             <div class="gasto-info">
 
                                 <span class="gasto-tipo">
-                                    <?= e($gasto['tipo_gasto']) ?>
+                                    <?= e($gasto['categoria_nombre']) ?>
                                 </span>
 
                                 <?php if (!empty($gasto['descripcion'])): ?>
