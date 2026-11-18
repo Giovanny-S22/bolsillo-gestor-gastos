@@ -11,10 +11,13 @@ class GastoController extends Controller
 
         $categoria = new Categoria();
 
+        $presupuestoActivo = $gasto->presupuestoActivo($idUsuario);
+
         $this->view('gastos/index', [
             'gastos' => $gasto->listar($idUsuario),
             'presupuestos' => $gasto->presupuestos($idUsuario),
             'categorias' => $categoria->listarActivas(),
+            'presupuestoActivo' => $presupuestoActivo,
         ]);
     }
 

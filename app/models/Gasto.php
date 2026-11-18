@@ -62,6 +62,22 @@ class Gasto extends Model
         return $st->fetchAll();
     }
 
+    public function presupuestoActivo(int $idUsuario): ?array
+    {
+    $st = $this->db->prepare(
+        'SELECT id, nombre, fecha_inicio, fecha_fin, limite, activo
+         FROM presupuestos
+         WHERE id_usuario = ?
+           AND activo = 1
+         ORDER BY id DESC
+         LIMIT 1'
+    );
+
+    $st->execute([$idUsuario]);
+
+    return $st->fetch() ?: null;
+    }
+
     public function presupuestoPerteneceUsuario(
         int $idPresupuesto,
         int $idUsuario

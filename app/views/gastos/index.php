@@ -136,10 +136,16 @@ require ROOT_PATH . '/app/views/partials/head.php';
                                 required
                             >
                                 <option value="">Selecciona un presupuesto</option>
-
                                 <?php foreach ($presupuestos as $presupuesto): ?>
-                                    <option value="<?= (int) $presupuesto['id'] ?>">
+                                    <option
+                                        value="<?= (int) $presupuesto['id'] ?>"
+                                        <?= !empty($presupuestoActivo) &&
+                                            (int) $presupuesto['id'] === (int) $presupuestoActivo['id']
+                                            ? 'selected'
+                                            : '' ?>
+                                    >
                                         <?= e($presupuesto['nombre']) ?>
+                                        <?= (int) $presupuesto['activo'] === 1 ? '<span style="color: #2ecc71; font-weight: bold;">(Activo)</span>' : '' ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
