@@ -415,3 +415,147 @@
     box-shadow: 0 0 0 3px rgba(14,90,88,.12);
     outline: none;
 }
+
+/* Iconos SVG */
+.gasto-icono svg,
+.historial-icono svg,
+.estado-icono svg {
+    width: 21px;
+    height: 21px;
+    display: block;
+}
+
+.campo label span[data-icon] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+}
+
+.campo label span[data-icon] svg {
+    width: 17px;
+    height: 17px;
+}
+
+/* Presupuesto activo */
+.presupuesto-item {
+    border-left: 4px solid var(--linea);
+    padding-left: 12px;
+}
+
+.presupuesto-item.presupuesto-actual {
+    border-left-color: #16803c;
+}
+
+.presupuesto-etiqueta {
+    display: inline-flex;
+    margin-left: 5px;
+    padding: 3px 7px;
+    border-radius: 20px;
+    background: rgba(22, 128, 60, .10);
+    color: #16803c;
+    font-size: .65rem;
+    font-weight: 800;
+}
+
+/* Información de fechas */
+.gasto-info p small {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.gasto-info p small svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* Acciones */
+.presupuesto-final {
+    min-width: 190px;
+}
+
+.presupuesto-acciones {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.presupuesto-acciones form {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.presupuesto-acciones a,
+.presupuesto-acciones button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: .72rem;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.presupuesto-acciones svg {
+    width: 14px;
+    height: 14px;
+}
+
+.presupuesto-acciones .accion-activar {
+    color: var(--primario);
+}
+
+.presupuesto-acciones .accion-editar {
+    color: var(--primario);
+    text-decoration: none;
+}
+
+.presupuesto-acciones .accion-eliminar {
+    color: var(--alerta);
+}
+
+.presupuesto-acciones a:hover,
+.presupuesto-acciones button:hover {
+    opacity: .7;
+}
+
+/* Mensajes */
+.mensaje {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.mensaje svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+/* Icono del botón */
+.gasto-boton svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+@media (max-width: 560px) {
+    .presupuesto-final {
+        min-width: 0;
+    }
+
+    .presupuesto-acciones {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}

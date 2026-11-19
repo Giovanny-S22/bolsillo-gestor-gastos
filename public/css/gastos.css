@@ -327,6 +327,136 @@
   color: var(--suave);
   font-size: .82rem;
 }
+
+/* Iconos SVG del módulo de gastos */
+.gasto-icono svg,
+.historial-icono svg,
+.estado-icono svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+
+.gasto-icono svg {
+  width: 23px;
+  height: 23px;
+}
+
+.campo label span[data-icon] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+}
+
+.campo label span[data-icon] svg {
+  width: 17px;
+  height: 17px;
+}
+
+.gasto-boton svg,
+.gasto-final svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* Selector de presupuesto */
+.gasto-campo select:focus,
+.gasto-campo select:valid {
+  outline: none;
+  border-color: var(--primario);
+  box-shadow: 0 0 0 3px rgba(14,90,88,.08);
+}
+
+/* Etiqueta de presupuesto activo */
+.campo label em.presupuesto-activo {
+  margin-left: 5px;
+  padding: 3px 8px;
+  background: rgba(22, 163, 74, .10);
+  color: #16803c;
+  font-size: .68rem;
+  font-weight: 700;
+}
+
+/* Mensajes de confirmación */
+.mensaje-flash {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.mensaje-flash svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* Icono de advertencia del presupuesto */
+.mensaje-error h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.mensaje-error h3 svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+/* Alineación de editar y eliminar */
+.gasto-final > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gasto-final a,
+.gasto-final button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.gasto-final form {
+  display: flex;
+  align-items: center;
+}
+
+.gasto-final a:hover,
+.gasto-final button:hover {
+  opacity: .75;
+}
+
+.gasto-info small {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.gasto-info small svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.gasto-campo select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding: 10px 42px 10px 14px;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    cursor: pointer;
+}
 @media (max-width: 720px) {
 
   .gasto-form,

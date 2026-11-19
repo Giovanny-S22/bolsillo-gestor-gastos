@@ -1,6 +1,6 @@
 <?php
 $titulo = 'Editar Presupuesto';
-$activo = 'presupuesto';
+$activo = 'presupuestos';
 $css = 'presupuesto.css';
 
 require ROOT_PATH . '/app/views/partials/head.php';
@@ -37,25 +37,37 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
                 <div class="gasto-grid">
                     <div class="campo gasto-campo">
-                        <label for="nombre">Nombre del presupuesto</label>
+                        <label for="nombre">
+                            <span data-icon="tag"></span>
+                            Nombre del presupuesto
+                        </label>
                         <input type="text" id="nombre" name="nombre" value="<?= e($presupuesto['nombre']) ?>" required maxlength="100">
                     </div>
 
                     <div class="campo gasto-campo">
-                        <label for="limite">Límite</label>
+                        <label for="limite">
+                            <span data-icon="wallet"></span>
+                            Límite
+                        </label>
                         <div class="monto-input">
-                            <span>$</span>
+                            <span data-icon="wallet"></span>
                             <input type="number" id="limite" name="limite" min="0.01" step="0.01" value="<?= e($presupuesto['limite']) ?>" required>
                         </div>
                     </div>
 
                     <div class="campo gasto-campo">
-                        <label for="fecha_inicio">Fecha de inicio</label>
+                        <label for="fecha_inicio">
+                            <span data-icon="calendar"></span>
+                            Fecha de inicio
+                        </label>
                         <input type="date" id="fecha_inicio" name="fecha_inicio" value="<?= e($presupuesto['fecha_inicio']) ?>" required>
                     </div>
 
                     <div class="campo gasto-campo">
-                        <label for="fecha_fin">Fecha de fin</label>
+                        <label for="fecha_fin">
+                            <span data-icon="calendar"></span>
+                            Fecha de fin
+                        </label>
                         <input type="date" id="fecha_fin" name="fecha_fin" value="<?= e($presupuesto['fecha_fin']) ?>" required>
                     </div>
 

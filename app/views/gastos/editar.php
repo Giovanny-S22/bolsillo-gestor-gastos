@@ -27,9 +27,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
             <div class="gasto-titulo">
 
-                <div class="gasto-icono">
-                    ✎
-                </div>
+                <div class="gasto-icono">✎</div>
 
                 <div>
                     <h2>Información del gasto</h2>
@@ -75,12 +73,12 @@ require ROOT_PATH . '/app/views/partials/head.php';
                     <div class="campo gasto-campo">
 
                         <label for="monto">
-                            <span>$</span>
+                            <span data-icon="wallet"></span>
                             Monto
                         </label>
 
                         <div class="monto-input">
-                            <span>$</span>
+                            <span data-icon="wallet"></span>
 
                             <input
                                 type="number"
@@ -98,7 +96,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
                     <div class="campo gasto-campo">
                         <label for="id_categoria">
-                            <span>◇</span>
+                            <span data-icon="tag"></span>
                             Categoría
                         </label>
 
@@ -133,7 +131,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
                     <div class="campo gasto-campo">
 
                         <label for="id_presupuesto">
-                            <span>◎</span>
+                            <span data-icon="target"></span>
                             Presupuesto
                         </label>
 
@@ -166,7 +164,7 @@ require ROOT_PATH . '/app/views/partials/head.php';
                     <div class="campo campo-completo gasto-campo">
 
                         <label for="descripcion">
-                            <span>▤</span>
+                            <span data-icon="align"></span>
                             Descripción
                             <em>Opcional</em>
                         </label>

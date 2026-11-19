@@ -22,17 +22,25 @@ require ROOT_PATH . '/app/views/partials/head.php';
         </header>
 
         <?php if ($mensaje = flash('exito')): ?>
-            <div class="mensaje mensaje-exito">✓ <?= e($mensaje) ?></div>
+            <div class="mensaje mensaje-exito">
+                <span data-icon="check"></span>
+                <?= e($mensaje) ?>
+            </div>
         <?php endif; ?>
 
         <?php if ($mensaje = flash('error')): ?>
-            <div class="mensaje mensaje-error">! <?= e($mensaje) ?></div>
+            <div class="mensaje mensaje-error">
+                <span data-icon="alert"></span>
+                <?= e($mensaje) ?>
+            </div>
         <?php endif; ?>
 
         <!-- Formulario para crear presupuesto -->
         <section class="panel gasto-form">
             <div class="gasto-titulo">
-                <div class="gasto-icono">+</div>
+                <div class="gasto-icono">
+                    <span data-icon="target"></span>
+                </div>
                 <div>
                     <h2>Nuevo Presupuesto</h2>
                     <p>Establece un nuevo límite en un periodo de tiempo.</p>
@@ -44,12 +52,18 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
                 <div class="gasto-grid">
                     <div class="campo gasto-campo">
-                        <label for="nombre">Nombre del presupuesto</label>
+                        <label for="nombre">
+                            <span data-icon="tag"></span>
+                            Nombre del presupuesto
+                        </label>
                         <input type="text" id="nombre" name="nombre" placeholder="Nombre del presupuesto" required maxlength="100">
                     </div>
 
                     <div class="campo gasto-campo">
-                        <label for="limite">Límite</label>
+                        <label for="limite">
+                            <span data-icon="wallet"></span>
+                            Límite
+                        </label>
                         <div class="monto-input">
                             <span>$</span>
                             <input type="number" id="limite" name="limite" min="0.01" step="0.01" placeholder="150000" required>
@@ -57,18 +71,25 @@ require ROOT_PATH . '/app/views/partials/head.php';
                     </div>
 
                     <div class="campo gasto-campo">
-                        <label for="fecha_inicio">Fecha de inicio</label>
+                        <label for="fecha_inicio">
+                            <span data-icon="calendar"></span>
+                            Fecha de inicio
+                        </label>
                         <input type="date" id="fecha_inicio" name="fecha_inicio" value="<?= e(date('Y-m-d')) ?>" required>
                     </div>
 
                     <div class="campo gasto-campo">
-                        <label for="fecha_fin">Fecha de fin</label>
+                        <label for="fecha_fin">
+                            <span data-icon="calendar"></span>
+                            Fecha de fin
+                        </label>
                         <input type="date" id="fecha_fin" name="fecha_fin" required>
                     </div>
 
                     <div class="campo campo-completo gasto-campo">
-                        <label>
-                            <input type="checkbox" name="activo" value="1"> Activar este presupuesto
+                        <label for="activo">
+                            <input type="checkbox" id="activo" name="activo" value="1">
+                            ✓ Activar este presupuesto
                         </label>
                     </div>
                 </div>
@@ -83,7 +104,9 @@ require ROOT_PATH . '/app/views/partials/head.php';
         <section class="panel historial">
             <div class="historial-header">
                 <div class="historial-titulo">
-                    <div class="historial-icono">▤</div>
+                    <div class="historial-icono">
+                        <span data-icon="receipt"></span>
+                    </div>
                     <div>
                         <h2>Historial de presupuestos</h2>
                         <p>Consulta y cambia tu presupuesto activo.</p>
@@ -96,14 +119,16 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
             <?php if (empty($presupuestos)): ?>
                 <div class="estado-vacio">
-                    <div class="estado-icono">$</div>
+                    <div class="estado-icono">
+                        <span data-icon="wallet"></span>
+                    </div>
                     <h3>No tienes presupuestos creados</h3>
                     <p>Crea tu primer presupuesto arriba para empezar.</p>
                 </div>
             <?php else: ?>
                 <div class="lista-gastos">
                     <?php foreach ($presupuestos as $presupuesto): ?>
-                        <article class="gasto-item" style="border-left: 4px solid <?= $presupuesto['activo'] ? '#2ecc71' : '#ccc' ?>;">
+                        <article class="gasto-item presupuesto-item <?= $presupuesto['activo'] ? 'presupuesto-actual' : '' ?>">
                             <div class="gasto-fecha">
                                 <strong><?= e(date('d', strtotime($presupuesto['fecha_inicio']))) ?></strong>
                                 <small><?= e(strtoupper(date('M', strtotime($presupuesto['fecha_inicio'])))) ?></small>
@@ -111,27 +136,61 @@ require ROOT_PATH . '/app/views/partials/head.php';
 
                             <div class="gasto-info">
                                 <span class="gasto-tipo">
-                                    <?= e($presupuesto['nombre']) ?> 
-                                    <?= $presupuesto['activo'] ? '<span style="color: #2ecc71; font-weight: bold;">(ACTIVO)</span>' : '' ?>
+                                    <?= e($presupuesto['nombre']) ?>
+
+                                    <?php if ($presupuesto['activo']): ?>
+                                        <span class="presupuesto-etiqueta">ACTIVO</span>
+                                    <?php endif; ?>
                                 </span>
-                                <p><small>Del <?= e($presupuesto['fecha_inicio']) ?> al <?= e($presupuesto['fecha_fin']) ?></small></p>
+                                <p>
+                                    <small>
+                                        <span data-icon="calendar"></span>
+                                        Del <?= e($presupuesto['fecha_inicio']) ?>
+                                        al <?= e($presupuesto['fecha_fin']) ?>
+                                    </small>
+                                </p>
                             </div>
 
-                            <div class="gasto-final">
+                            <div class="gasto-final presupuesto-final">
                                 <strong><?= e(money($presupuesto['limite'])) ?></strong>
-                                <div>
+
+                                <div class="presupuesto-acciones">
+
                                     <?php if (!$presupuesto['activo']): ?>
-                                       <form method="post" action="<?= e(url('presupuesto/activar')) ?>" style="display:inline;">
+                                        <form method="post" action="<?= e(url('presupuesto/activar')) ?>">
                                             <?= csrf_field() ?>
-                                            <input type="hidden" name="id" value="<?= (int) $presupuesto['id'] ?>">
-                                            <button type="submit" class="boton-secundario" style="background:none; border:none; cursor:pointer; color:var(--primario);">Activar</button>
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                value="<?= (int) $presupuesto['id'] ?>"
+                                            >
+                                            <button type="submit" class="accion-activar">
+                                                ✓ Activar
+                                            </button>
                                         </form>
                                     <?php endif; ?>
-                                    <a href="<?= e(url('presupuesto/editar?id=' . (int) $presupuesto['id'])) ?>">Editar</a>
-                                    <form method="post" action="<?= e(url('presupuesto/eliminar')) ?>" onsubmit="return confirm('¿Seguro que deseas eliminar este presupuesto?');">
+                                    <a
+                                        class="accion-editar"
+                                        href="<?= e(url('presupuesto/editar?id=' . (int) $presupuesto['id'])) ?>"
+                                    >
+                                        <span data-icon="edit"></span>
+                                        Editar
+                                    </a>
+                                    <form
+                                        method="post"
+                                        action="<?= e(url('presupuesto/eliminar')) ?>"
+                                        onsubmit="return confirm('¿Seguro que deseas eliminar este presupuesto?');"
+                                    >
                                         <?= csrf_field() ?>
-                                        <input type="hidden" name="id" value="<?= (int) $presupuesto['id'] ?>">
-                                        <button type="submit">Eliminar</button>
+                                        <input
+                                            type="hidden"
+                                            name="id"
+                                            value="<?= (int) $presupuesto['id'] ?>"
+                                        >
+                                        <button type="submit" class="accion-eliminar">
+                                            <span data-icon="trash"></span>
+                                            Eliminar
+                                        </button>
                                     </form>
                                 </div>
                             </div>

@@ -12,7 +12,7 @@
     <a href="<?= e(url('gastos')) ?>" <?= ($activo ?? '') === 'gastos' ? 'aria-current="page"' : '' ?>>
       <span class="icono" data-icon="receipt"></span><span>Gastos</span>
     </a>
-    <a href="<?= e(url('presupuesto')) ?>" <?= ($activo ?? '') === 'presupuesto' ? 'aria-current="page"' : '' ?>>
+    <a href="<?= e(url('presupuesto')) ?>" <?= ($activo ?? '') === 'presupuestos' ? 'aria-current="page"' : '' ?>>
       <span class="icono" data-icon="target"></span><span>Gestionar presupuesto</span>
     </a>
   </nav>
