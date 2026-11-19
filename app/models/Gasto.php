@@ -64,19 +64,53 @@ class Gasto extends Model
 
     public function presupuestoActivo(int $idUsuario): ?array
     {
-    $st = $this->db->prepare(
-        'SELECT id, nombre, fecha_inicio, fecha_fin, limite, activo
-         FROM presupuestos
-         WHERE id_usuario = ?
-           AND activo = 1
-         ORDER BY id DESC
-         LIMIT 1'
-    );
+        $st = $this->db->prepare(
+            'SELECT id, nombre, fecha_inicio, fecha_fin, limite, activo
+             FROM presupuestos
+             WHERE id_usuario = ?
+               AND activo = 1
+             ORDER BY id DESC
+             LIMIT 1'
+        );
 
-    $st->execute([$idUsuario]);
+        $st->execute([$idUsuario]);
 
-    return $st->fetch() ?: null;
+        return $st->fetch() ?: null;
     }
+
+    public function resumenPresupuesto(
+        int $idUsuario,
+        int $idPresupuesto
+    ): ?array {
+        $st = $this->db->prepare(
+            'SELECT
+                p.id,
+                p.nombre,
+                p.limite,
+                p.fecha_inicio,
+                p.fecha_fin,
+                COALESCE(SUM(g.monto), 0) AS total_gastado
+             FROM presupuestos p
+             LEFT JOIN gastos g
+                ON g.id_presupuesto = p.id
+                AND g.id_usuario = p.id_usuario
+                AND g.fecha BETWEEN p.fecha_inicio AND p.fecha_fin
+             WHERE p.id = ?
+               AND p.id_usuario = ?
+             GROUP BY
+                p.id,
+                p.nombre,
+                p.limite,
+                p.fecha_inicio,
+                p.fecha_fin
+             LIMIT 1'
+        );
+
+        $st->execute([$idPresupuesto, $idUsuario]);
+
+        return $st->fetch() ?: null;
+    }
+
 
     public function presupuestoPerteneceUsuario(
         int $idPresupuesto,

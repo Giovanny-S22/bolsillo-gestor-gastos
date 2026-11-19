@@ -31,43 +31,89 @@ require ROOT_PATH . '/app/views/partials/head.php';
             <div class="mensaje mensaje-error">! <?= e($mensaje) ?></div>
         <?php endif; ?>
 
-
         <section class="panel gasto-form">
 
             <div class="gasto-titulo">
-                <div class="gasto-icono">
-                    +
-                </div>
-
+                <div class="gasto-icono">+</div>
                 <div>
                     <h2>Registrar gasto</h2>
                     <p>Añade un nuevo movimiento a tu presupuesto.</p>
                 </div>
             </div>
 
-
-            <?php if (empty($presupuestos)): ?>
-
+            <?php if (!empty($alertaPresupuesto)): ?>
+                <div class="mensaje mensaje-error">
+                    <h3>¡Atención! Límite del presupuesto alcanzado</h3>
+                    <p>
+                        El gasto que intentas registrar hará que el presupuesto
+                        <strong><?= e($alertaPresupuesto['nombre_presupuesto']) ?></strong>
+                        alcance o supere su límite.
+                    </p>
+                    <p>
+                        <strong>Límite:</strong>
+                        <?= e(money($alertaPresupuesto['limite'])) ?>
+                    </p>
+                    <p>
+                        <strong>Total gastado actualmente:</strong>
+                        <?= e(money($alertaPresupuesto['total_gastado'])) ?>
+                    </p>
+                    <p>
+                        <strong>Nuevo gasto:</strong>
+                        <?= e(money($alertaPresupuesto['monto'])) ?>
+                    </p>
+                    <p>
+                        <strong>Total después del registro:</strong>
+                        <?= e(money($alertaPresupuesto['total_despues'])) ?>
+                    </p>
+                    <?php if ($alertaPresupuesto['excedente'] > 0): ?>
+                        <p>
+                            <strong>Excedente:</strong>
+                            <?= e(money($alertaPresupuesto['excedente'])) ?>
+                        </p>
+                    <?php else: ?>
+                        <p>Este gasto hará que el presupuesto llegue exactamente a su límite.</p>
+                    <?php endif; ?>
+                    <p>¿Deseas registrar el gasto de todas formas?</p>
+                    <div class="gasto-boton">
+                        <form method="post" action="<?= e(url('gastos')) ?>">
+                            <?= csrf_field() ?>
+                            <button
+                                class="boton"
+                                type="submit"
+                                name="confirmar_exceso"
+                                value="1"
+                            >
+                                Registrar de todas formas
+                            </button>
+                        </form>
+                        <form method="post" action="<?= e(url('gastos')) ?>">
+                            <?= csrf_field() ?>
+                            <button
+                                class="boton"
+                                type="submit"
+                                name="cancelar_exceso"
+                                value="1"
+                            >
+                                Cancelar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            <?php elseif (empty($presupuestos)): ?>
                 <div class="estado-vacio">
                     <div class="estado-icono">$</div>
                     <h3>No tienes presupuestos disponibles</h3>
                     <p>Primero necesitas crear un presupuesto para registrar gastos.</p>
                 </div>
-
             <?php else: ?>
-
                 <form method="post" action="<?= e(url('gastos')) ?>">
-
                     <?= csrf_field() ?>
-
                     <div class="gasto-grid">
-
                         <div class="campo gasto-campo">
                             <label for="fecha">
                                 <span class="icono" data-icon="calendar"></span>
                                 Fecha
                             </label>
-
                             <input
                                 type="date"
                                 id="fecha"
@@ -77,17 +123,13 @@ require ROOT_PATH . '/app/views/partials/head.php';
                                 required
                             >
                         </div>
-
-
                         <div class="campo gasto-campo">
                             <label for="monto">
                                 <span>$</span>
                                 Monto
                             </label>
-
                             <div class="monto-input">
                                 <span>$</span>
-
                                 <input
                                     type="number"
                                     id="monto"
@@ -99,21 +141,13 @@ require ROOT_PATH . '/app/views/partials/head.php';
                                 >
                             </div>
                         </div>
-
-
                         <div class="campo gasto-campo">
                             <label for="id_categoria">
                                 <span>◇</span>
                                 Categoría
                             </label>
-
-                            <select
-                                id="id_categoria"
-                                name="id_categoria"
-                                required
-                            >
+                            <select id="id_categoria" name="id_categoria" required>
                                 <option value="">Selecciona una categoría</option>
-
                                 <?php foreach ($categorias as $categoria): ?>
                                     <option value="<?= (int) $categoria['id'] ?>">
                                         <?= e($categoria['nombre']) ?>
@@ -121,20 +155,12 @@ require ROOT_PATH . '/app/views/partials/head.php';
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
-
-
                         <div class="campo gasto-campo">
                             <label for="id_presupuesto">
                                 <span>◎</span>
                                 Presupuesto
                             </label>
-
-                            <select
-                                id="id_presupuesto"
-                                name="id_presupuesto"
-                                required
-                            >
+                            <select id="id_presupuesto" name="id_presupuesto" required>
                                 <option value="">Selecciona un presupuesto</option>
                                 <?php foreach ($presupuestos as $presupuesto): ?>
                                     <option
@@ -145,20 +171,17 @@ require ROOT_PATH . '/app/views/partials/head.php';
                                             : '' ?>
                                     >
                                         <?= e($presupuesto['nombre']) ?>
-                                        <?= (int) $presupuesto['activo'] === 1 ? '<span style="color: #2ecc71; font-weight: bold;">(Activo)</span>' : '' ?>
+                                        <?= (int) $presupuesto['activo'] === 1 ? '(Activo)' : '' ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
-
                         <div class="campo campo-completo gasto-campo">
                             <label for="descripcion">
                                 <span>▤</span>
                                 Descripción
                                 <em>Opcional</em>
                             </label>
-
                             <input
                                 type="text"
                                 id="descripcion"
@@ -167,25 +190,16 @@ require ROOT_PATH . '/app/views/partials/head.php';
                                 placeholder="Ej. Almuerzo con compañeros"
                             >
                         </div>
-
                     </div>
-
-
                     <div class="gasto-boton">
                         <button class="boton" type="submit">
                             + Registrar gasto
                         </button>
                     </div>
-
                 </form>
-
             <?php endif; ?>
-
         </section>
-
-
         <section class="panel historial">
-
             <div class="historial-header">
 
                 <div class="historial-titulo">
