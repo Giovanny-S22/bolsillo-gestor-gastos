@@ -1,0 +1,137 @@
+version: "3.1"
+
+rules:
+- rule: Responder al saludo
+  steps:
+    - intent: saludar
+    - action: utter_saludar
+
+- rule: Despedirse
+  steps:
+    - intent: despedirse
+    - action: utter_despedirse
+
+- rule: Responder afirmación
+  condition:
+    - active_loop: null
+  steps:
+    - intent: afirmar
+    - action: utter_afirmar
+
+- rule: Responder negación
+  condition:
+    - active_loop: null
+  steps:
+    - intent: negar
+    - action: utter_negar
+
+- rule: Agradecer
+  steps:
+    - intent: agradecer
+    - action: utter_agradecer
+
+- rule: Identificar al bot
+  steps:
+    - intent: desafio_bot
+    - action: utter_desafio_bot
+
+- rule: Mostrar ayuda
+  steps:
+    - intent: pedir_ayuda
+    - action: utter_pedir_ayuda
+
+# FORMULARIO 1: REGISTRO DE GASTOS
+- rule: Iniciar formulario de gastos
+  steps:
+    - intent: registrar_gasto
+    - action: gasto_form
+    - active_loop: gasto_form
+
+- rule: Enviar formulario de gastos
+  condition:
+    - active_loop: gasto_form
+  steps:
+    - action: gasto_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: utter_resumen_gasto
+    - action: action_restart
+
+# FORMULARIO 2: CREACIÓN DE PRESUPUESTOS
+- rule: Iniciar formulario de presupuesto
+  steps:
+    - intent: crear_presupuesto
+    - action: presupuesto_form
+    - active_loop: presupuesto_form
+
+- rule: Enviar formulario de presupuesto
+  condition:
+    - active_loop: presupuesto_form
+  steps:
+    - action: presupuesto_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: utter_resumen_presupuesto
+    - action: action_restart
+
+# FORMULARIO 3: CONSULTA DE GASTOS
+- rule: Iniciar formulario de consulta de gastos
+  steps:
+    - intent: consultar_gastos
+    - action: consulta_gastos_form
+    - active_loop: consulta_gastos_form
+
+- rule: Enviar formulario de consulta de gastos
+  condition:
+    - active_loop: consulta_gastos_form
+  steps:
+    - action: consulta_gastos_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: utter_resumen_consulta_gastos
+    - action: action_restart
+
+- rule: Editar gasto
+  steps:
+    - intent: editar_gasto
+    - action: utter_editar_gasto
+    - action: action_restart
+
+- rule: Eliminar gasto
+  steps:
+    - intent: eliminar_gasto
+    - action: utter_eliminar_gasto
+    - action: action_restart
+
+- rule: Activar presupuesto
+  steps:
+    - intent: activar_presupuesto
+    - action: utter_activar_presupuesto
+    - action: action_restart
+
+- rule: Consultar presupuestos
+  steps:
+    - intent: consultar_presupuestos
+    - action: utter_consultar_presupuestos
+    - action: action_restart
+
+- rule: Consultar estado de presupuesto
+  steps:
+    - intent: consultar_estado_presupuesto
+    - action: utter_consultar_estado_presupuesto
+    - action: action_restart
+
+- rule: Consejo de ahorro
+  steps:
+    - intent: pedir_consejo_ahorro
+    - action: utter_pedir_consejo_ahorro
+
+- rule: Fallback
+  condition:
+    - active_loop: null
+  steps:
+    - intent: nlu_fallback
+    - action: utter_no_entendi

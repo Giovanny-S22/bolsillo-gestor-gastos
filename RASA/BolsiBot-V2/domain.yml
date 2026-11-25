@@ -1,0 +1,278 @@
+version: "3.1"
+
+intents:
+  - saludar
+  - despedirse
+  - afirmar
+  - negar
+  - agradecer
+  - desafio_bot
+  - pedir_ayuda
+  - registrar_gasto
+  - informar_gasto
+  - consultar_gastos
+  - informar_consulta
+  - informar_identificadores
+  - editar_gasto
+  - eliminar_gasto
+  - crear_presupuesto
+  - informar_presupuesto
+  - activar_presupuesto
+  - consultar_presupuestos
+  - consultar_estado_presupuesto
+  - pedir_consejo_ahorro
+
+# 11 entidades: se elimina metodo_pago (no existe en la tabla gastos de Bolsillo)
+# y se incorporan cuatro entidades nuevas.
+entities:
+  - monto
+  - categoria
+  - fecha
+  - descripcion
+  - periodo
+  - nombre_presupuesto
+  - limite
+  - fecha_inicio
+  - fecha_fin
+  - id_gasto
+  - estado_presupuesto
+
+slots:
+  monto:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: monto
+      - type: from_text
+        conditions:
+          - active_loop: gasto_form
+            requested_slot: monto
+
+  categoria:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: categoria
+      - type: from_text
+        conditions:
+          - active_loop: gasto_form
+            requested_slot: categoria
+      - type: from_text
+        conditions:
+          - active_loop: consulta_gastos_form
+            requested_slot: categoria
+
+  fecha:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: fecha
+      - type: from_text
+        conditions:
+          - active_loop: gasto_form
+            requested_slot: fecha
+
+  descripcion:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: gasto_form
+            requested_slot: descripcion
+
+  periodo:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: periodo
+      - type: from_text
+        conditions:
+          - active_loop: consulta_gastos_form
+            requested_slot: periodo
+
+  nombre_presupuesto:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: nombre_presupuesto
+      - type: from_text
+        conditions:
+          - active_loop: presupuesto_form
+            requested_slot: nombre_presupuesto
+
+  limite:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: limite
+      - type: from_text
+        conditions:
+          - active_loop: presupuesto_form
+            requested_slot: limite
+
+  fecha_inicio:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: presupuesto_form
+            requested_slot: fecha_inicio
+
+  fecha_fin:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: presupuesto_form
+            requested_slot: fecha_fin
+
+  id_gasto:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: id_gasto
+
+  estado_presupuesto:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: estado_presupuesto
+
+responses:
+  utter_saludar:
+    - text: "¡Hola! Soy BolsiBot, tu asistente de gastos personales. ¿En qué te puedo ayudar hoy?"
+    - text: "¡Hola! Cuéntame, ¿quieres registrar un gasto o revisar tu presupuesto?"
+
+  utter_despedirse:
+    - text: "¡Hasta pronto! Recuerda anotar tus gastos todos los días."
+    - text: "Chao, que tengas un excelente día. Aquí estaré cuando quieras revisar tus cuentas."
+
+  utter_afirmar:
+    - text: "Perfecto. ¿En qué más te puedo ayudar?"
+
+  utter_negar:
+    - text: "Está bien, no hay problema. ¿Necesitas algo más?"
+
+  utter_agradecer:
+    - text: "¡Con gusto! Si necesitas algo más con tus gastos, aquí estoy."
+    - text: "De nada, para eso estoy. ¿Algo más?"
+
+  utter_desafio_bot:
+    - text: "Soy BolsiBot, un chatbot creado para ayudarte a llevar el control de tus gastos y presupuestos."
+
+  utter_pedir_ayuda:
+    - text: "Puedo ayudarte a:\n- Registrar gastos\n- Consultar gastos por periodo o categoría\n- Crear y consultar presupuestos\n- Revisar el estado de un presupuesto\n- Identificar gastos para editarlos o eliminarlos\n- Darte consejos para ahorrar\n¿Por dónde empezamos?"
+
+  utter_ask_gasto_form_monto:
+    - text: "¿Cuál fue el monto del gasto? (Ejemplo: 20000 o 30.000)"
+
+  utter_ask_gasto_form_categoria:
+    - text: "¿En qué categoría va? (comida, transporte, mercado, servicios, ocio, salud, educación u otros)"
+
+  utter_ask_gasto_form_fecha:
+    - text: "¿Qué fecha tuvo el gasto? Puedes escribir hoy, ayer o una fecha como 2026-11-19."
+
+  utter_ask_gasto_form_descripcion:
+    - text: "¿Cuál es la descripción del gasto? (Ejemplo: almuerzo, recibo de internet o compra del mercado)"
+
+  utter_resumen_gasto:
+    - custom:
+        accion: "registrar_gasto"
+        monto: "{monto}"
+        categoria: "{categoria}"
+        fecha: "{fecha}"
+        descripcion: "{descripcion}"
+
+  utter_ask_presupuesto_form_nombre_presupuesto:
+    - text: "¿Qué nombre tendrá el presupuesto?"
+
+  utter_ask_presupuesto_form_limite:
+    - text: "¿Cuál será el límite del presupuesto? (Ejemplo: 500000)"
+
+  utter_ask_presupuesto_form_fecha_inicio:
+    - text: "¿Cuál será la fecha de inicio? Preferiblemente usa AAAA-MM-DD, por ejemplo 2026-12-01."
+
+  utter_ask_presupuesto_form_fecha_fin:
+    - text: "¿Cuál será la fecha de finalización? Preferiblemente usa AAAA-MM-DD, por ejemplo 2026-12-31."
+
+  utter_resumen_presupuesto:
+    - custom:
+        accion: "crear_presupuesto"
+        nombre_presupuesto: "{nombre_presupuesto}"
+        limite: "{limite}"
+        fecha_inicio: "{fecha_inicio}"
+        fecha_fin: "{fecha_fin}"
+
+  utter_ask_consulta_gastos_form_periodo:
+    - text: "¿Qué periodo deseas consultar? (hoy, esta semana, este mes, el mes pasado o un mes específico)"
+
+  utter_ask_consulta_gastos_form_categoria:
+    - text: "¿Qué categoría deseas consultar? Escribe una categoría o 'todas'."
+
+  utter_resumen_consulta_gastos:
+    - custom:
+        accion: "consultar_gastos"
+        periodo: "{periodo}"
+        categoria: "{categoria}"
+
+  utter_editar_gasto:
+    - text: "Quieres editar un gasto. Para identificarlo puedes indicar su número de registro. Actualmente no se modifica ningún dato en la base de datos."
+
+  utter_eliminar_gasto:
+    - text: "Quieres eliminar un gasto. Para identificarlo puedes indicar su número de registro. Actualmente no se elimina ningún dato de la base de datos."
+
+  utter_activar_presupuesto:
+    - text: "Quieres cambiar el estado de un presupuesto:\n- Nombre: {nombre_presupuesto}\n- Estado solicitado: {estado_presupuesto}\nActualmente solo identifico esos datos."
+
+  utter_consultar_presupuestos:
+    - custom:
+        accion: "listar_presupuestos"
+
+  utter_consultar_estado_presupuesto:
+    - custom:
+        accion: "estado_presupuesto"
+        nombre_presupuesto: "{nombre_presupuesto}"
+
+  utter_pedir_consejo_ahorro:
+    - text: "Un buen consejo: antes de comprar algo que no es necesario, espera 24 horas. Muchas veces las ganas se pasan y te ahorras ese dinero."
+    - text: "Registra todos tus gastos, incluso los pequeños. Los gastos hormiga, como un café diario, suman bastante a fin de mes."
+    - text: "Define un presupuesto para cada periodo y revisa con frecuencia cuánto te queda por día."
+    - text: "Revisa en qué categoría gastas más y fíjate una meta para reducirla un poco cada mes."
+
+  utter_no_entendi:
+    - text: "Lo siento, no te entendí bien. Soy BolsiBot y puedo ayudarte con gastos y presupuestos. Escribe 'ayuda' para ver las opciones."
+
+forms:
+  gasto_form:
+    required_slots:
+      - monto
+      - categoria
+      - fecha
+      - descripcion
+
+  presupuesto_form:
+    required_slots:
+      - nombre_presupuesto
+      - limite
+      - fecha_inicio
+      - fecha_fin
+
+  consulta_gastos_form:
+    required_slots:
+      - periodo
+      - categoria
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false

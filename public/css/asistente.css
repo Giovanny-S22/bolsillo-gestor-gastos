@@ -1,0 +1,282 @@
+/* Contenedor principal (renombrado a .bolsibot para no chocar con .burbuja.bot) */
+.bolsibot {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 30;
+  font-family: var(--f-texto);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* Globo de bienvenida flotante */
+.bot-saludo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 235px;
+  padding: 9px 12px;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 14px 14px 4px 14px;
+  box-shadow: 0 8px 22px rgba(14, 90, 88, 0.18);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  animation: aparecerSaludo 0.35s ease forwards;
+}
+
+.bot-saludo[hidden] {
+  display: none;
+}
+
+.bot-saludo-cerrar {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  opacity: 0.55;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.bot-saludo-cerrar:hover {
+  opacity: 1;
+}
+
+/* Botón tipo bolita compacta (56px) */
+.bot-boton {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--primario);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(14, 90, 88, 0.35);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  animation: pulsoBot 3s infinite;
+}
+
+.bot-boton:hover {
+  background: var(--primario-osc);
+  transform: scale(1.06);
+  animation: none;
+}
+
+.bot-boton .icono,
+.bot-boton svg {
+  width: 26px;
+  height: 26px;
+  display: inline-grid;
+  place-items: center;
+}
+
+/* Bolita pequeña de estado: Verde por defecto (activo), Rojo si hay error */
+.bot-estado {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 13px;
+  height: 13px;
+  background: #22c55e; /* Verde: Rasa responde */
+  border: 2.5px solid var(--superficie);
+  border-radius: 50%;
+  transition: background-color 0.25s ease;
+}
+
+.bot-estado.inactivo {
+  background: #ef4444; /* Rojo: sin conexión / error */
+}
+
+.bot-estado.verificando {
+  background: #9aa5a3; /* Gris: comprobando si Rasa responde */
+}
+
+/* Panel del chat */
+.bot-panel {
+  position: absolute;
+  right: 0;
+  bottom: 68px;
+  width: min(360px, calc(100vw - 40px));
+  height: min(480px, 70dvh);
+  display: flex;
+  flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(20, 48, 46, 0.24);
+  overflow: hidden;
+  transform-origin: bottom right;
+  animation: abrirPanel 0.2s ease;
+}
+
+.bot-panel[hidden] {
+  display: none;
+}
+
+.bot-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--primario);
+  color: #fff;
+}
+
+.bot-cabecera .icono,
+.bot-cabecera svg {
+  width: 22px;
+  height: 22px;
+  display: inline-grid;
+  place-items: center;
+}
+
+.bot-cabecera strong {
+  flex: 1;
+  font: 700 1rem var(--f-titulo);
+}
+
+/* Botón Reiniciar mejorado para que destaque y sea legible */
+.bot-reiniciar {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+  font: 600 0.78rem var(--f-texto);
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.bot-reiniciar:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.bot-cerrar {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.45rem;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.bot-cerrar:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.bot-mensajes {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+}
+
+/* Burbujas dentro del chat (ya sin conflicto de position: fixed) */
+.burbuja {
+  position: static;
+  max-width: 85%;
+  padding: 9px 12px;
+  border-radius: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: .93rem;
+  line-height: 1.4;
+}
+
+.burbuja.bot {
+  align-self: flex-start;
+  background: var(--fondo);
+  border: 1px solid var(--linea);
+}
+
+.burbuja.yo {
+  align-self: flex-end;
+  background: var(--primario);
+  color: #fff;
+}
+
+.burbuja.error {
+  align-self: flex-start;
+  background: #fbeceb;
+  color: var(--alerta);
+  border: 1px solid var(--alerta);
+}
+
+.bot-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid var(--linea);
+  background: var(--superficie);
+}
+
+.bot-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--linea);
+  border-radius: 10px;
+  font: inherit;
+}
+
+.bot-form button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--primario);
+  color: #fff;
+  font: 600 .95rem var(--f-texto);
+  cursor: pointer;
+}
+
+.bot-form button:hover {
+  background: var(--primario-osc);
+}
+
+.bot-form button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+@keyframes pulsoBot {
+  0% { box-shadow: 0 0 0 0 rgba(14, 90, 88, 0.5); }
+  70% { box-shadow: 0 0 0 11px rgba(14, 90, 88, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(14, 90, 88, 0); }
+}
+
+@keyframes aparecerSaludo {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes abrirPanel {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* En móvil el menú está abajo: subimos el botón para no taparlo */
+@media (max-width: 760px) {
+  .bolsibot {
+    right: 16px;
+    bottom: 88px;
+  }
+  .bot-panel {
+    height: min(480px, 60dvh);
+  }
+  .bot-saludo {
+    max-width: 205px;
+    font-size: 0.8rem;
+  }
+}

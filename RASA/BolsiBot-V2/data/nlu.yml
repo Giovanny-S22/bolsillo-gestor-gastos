@@ -1,0 +1,368 @@
+version: "3.1"
+
+nlu:
+- intent: saludar
+  examples: |
+    - hola
+    - holi
+    - buenas
+    - buenos días
+    - buen día
+    - buenas tardes
+    - buenas noches
+    - hey
+    - ey
+    - saludos
+    - hola bot
+    - qué tal
+    - qué más
+    - hola, ¿cómo estás?
+    - buenas, ¿cómo vas?
+
+- intent: despedirse
+  examples: |
+    - adiós
+    - chao
+    - chau
+    - hasta luego
+    - hasta pronto
+    - hasta mañana
+    - nos vemos
+    - nos vemos luego
+    - me voy
+    - bye
+    - eso es todo
+    - hasta la próxima
+    - cuídate
+    - que tengas un buen día
+
+- intent: afirmar
+  examples: |
+    - sí
+    - si
+    - claro
+    - por supuesto
+    - correcto
+    - dale
+    - de acuerdo
+    - ok
+    - listo
+    - perfecto
+    - así es
+    - exacto
+    - está bien
+    - vale
+    - adelante
+
+- intent: negar
+  examples: |
+    - no
+    - nop
+    - no gracias
+    - para nada
+    - negativo
+    - mejor no
+    - no quiero
+    - nunca
+    - cancelar
+    - déjalo así
+    - olvídalo
+    - no es correcto
+
+- intent: agradecer
+  examples: |
+    - gracias
+    - muchas gracias
+    - mil gracias
+    - te lo agradezco
+    - gracias por la ayuda
+    - gracias bot
+    - muy amable
+    - excelente, gracias
+    - eso me sirve
+    - genial, gracias
+
+- intent: desafio_bot
+  examples: |
+    - ¿eres un bot?
+    - ¿eres una persona?
+    - ¿eres humano?
+    - ¿hablo con un robot?
+    - ¿estoy hablando con una máquina?
+    - ¿hablo con una persona o con un bot?
+    - ¿eres una inteligencia artificial?
+    - ¿eres real?
+
+- intent: pedir_ayuda
+  examples: |
+    - ayuda
+    - necesito ayuda
+    - ¿qué puedes hacer?
+    - ¿cómo funcionas?
+    - ¿en qué me ayudas?
+    - ¿para qué sirves?
+    - ¿qué sabes hacer?
+    - ¿cómo te uso?
+    - ¿qué opciones tengo?
+    - muéstrame lo que sabes hacer
+    - no sé qué preguntarte
+    - ¿qué comandos hay?
+
+- intent: registrar_gasto
+  examples: |
+    - quiero registrar un gasto
+    - necesito anotar un gasto
+    - registra un gasto de [20000](monto)
+    - gasté [15000](monto) en [comida](categoria)
+    - anota un gasto de [30.000](monto) en [transporte](categoria)
+    - [hoy](fecha) gasté [45 mil](monto) en [mercado](categoria)
+    - [ayer](fecha) gasté [12000](monto) en [ocio](categoria)
+    - registra [25000](monto) en [servicios](categoria) del [3 de noviembre](fecha)
+    - agrega un gasto de [18 mil](monto) por [almuerzo con compañeros](descripcion)
+    - gasté [60000](monto) en [mercado](categoria)
+    - pagué [120.000](monto) de [internet](descripcion) en [servicios](categoria)
+    - añade un gasto de [8500](monto) en [transporte](categoria)
+    - gasté [20.000](monto) pesos en [comida](categoria) [hoy](fecha)
+    - compré [regalos de navidad](descripcion) por [250.000](monto)
+    - quiero anotar que gasté [35000](monto) en [salud](categoria)
+    - pagué [4500](monto) pesos de bus, categoría [transporte](categoria)
+    - registra un gasto en [ocio](categoria) de [40 mil](monto) del [viernes pasado](fecha)
+    - acabo de gastar [9000](monto) en [comida](categoria)
+    - guarda un gasto de [75.000](monto) en [otros](categoria)
+    - gasté [22 mil](monto) en [educación](categoria) el [15 de octubre](fecha)
+    - añade [10000](monto) en [transporte](categoria) por [recarga de la tarjeta de bus](descripcion)
+    - hoy pagué [50000](monto) en [otros](categoria)
+
+- intent: informar_gasto
+  examples: |-
+    - [20000](monto)
+    - [15000](monto)
+    - [30.000](monto)
+    - [45mil](monto)
+    - [45 mil](monto)
+    - [120000](monto)
+    - [8500](monto)
+    - [250.000](monto)
+    - [comida](categoria)
+    - [transporte](categoria)
+    - [mercado](categoria)
+    - [ocio](categoria)
+    - [servicios](categoria)
+    - [salud](categoria)
+    - [otros](categoria)
+    - [educación](categoria)
+    - [otros](categoria)
+    - [hoy](fecha)
+    - [ayer](fecha)
+    - [antier](fecha)
+    - [3 de noviembre](fecha)
+    - [15 de octubre](fecha)
+    - [viernes pasado](fecha)
+    - [el lunes](fecha)
+    - [almuerzo con compañeros](descripcion)
+    - [internet](descripcion)
+    - [regalos de navidad](descripcion)
+    - [recarga de la tarjeta de bus](descripcion)
+    - [café y pan](descripcion)
+    - [recibo de la luz](descripcion)
+
+- intent: consultar_gastos
+  examples: |
+    - quiero consultar un gasto
+    - ¿cuánto he gastado [este mes](periodo)?
+    - ¿cuánto gasté [hoy](periodo)?
+    - ¿cuánto gasté [ayer](periodo)?
+    - muéstrame mis gastos de [esta semana](periodo)
+    - ¿cuánto he gastado en [comida](categoria)?
+    - ¿cuánto gasté en [transporte](categoria) [el mes pasado](periodo)?
+    - dime mis gastos de [octubre](periodo)
+    - quiero ver mis gastos en [ocio](categoria) de [esta semana](periodo)
+    - ¿cuál ha sido mi gasto total [este mes](periodo)?
+    - lista mis últimos gastos
+    - ¿en qué he gastado más [este mes](periodo)?
+    - quiero ver el historial de gastos
+    - ¿cuánto llevo gastado en [mercado](categoria)?
+    - dame un resumen de gastos de [la semana pasada](periodo)
+    - ¿cuánto he gastado [en los últimos 7 días](periodo)?
+    - dame el total gastado en [servicios](categoria) durante [noviembre](periodo)
+    - ¿cuánto gasté en [salud](categoria) [este año](periodo)?
+
+- intent: editar_gasto
+  examples: |
+    - quiero editar un gasto
+    - necesito corregir un gasto
+    - cambia el monto de mi último gasto a [25000](monto)
+    - modifica el gasto de [comida](categoria)
+    - corrige el gasto de [ayer](fecha)
+    - me equivoqué en el monto
+    - cambia la categoría del último gasto a [ocio](categoria)
+    - edita el gasto de [12000](monto)
+    - quiero cambiar la fecha de un gasto
+    - actualiza el gasto de [transporte](categoria) del [5 de noviembre](fecha)
+
+- intent: eliminar_gasto
+  examples: |
+    - quiero eliminar un gasto
+    - borra mi último gasto
+    - elimina el gasto de [comida](categoria) de [ayer](fecha)
+    - borra el gasto de [20000](monto)
+    - me equivoqué, elimina el último registro
+    - quita el gasto de [transporte](categoria)
+    - elimina el gasto de [hoy](fecha)
+    - necesito borrar un gasto
+    - elimina el gasto de [ocio](categoria) de [40 mil](monto)
+    - borra el gasto del [3 de noviembre](fecha)
+
+- intent: crear_presupuesto
+  examples: |
+    - quiero crear un presupuesto
+    - crea un presupuesto llamado [Navidad](nombre_presupuesto)
+    - nuevo presupuesto de [500000](limite) para [diciembre](periodo)
+    - crear presupuesto [gastos de noviembre](nombre_presupuesto) con límite de [1.500.000](limite)
+    - quiero un presupuesto de [800 mil](limite) para [este mes](periodo)
+    - agrega un presupuesto de [2 millones](limite) llamado [vacaciones](nombre_presupuesto)
+    - define un límite de [300000](limite) para [la próxima semana](periodo)
+    - necesito un presupuesto para [el mes de enero](periodo)
+    - crea el presupuesto [universidad](nombre_presupuesto) por [1.200.000](limite)
+    - ayúdame a crear un presupuesto de [600 mil](limite)
+    - quiero ponerme un límite de gasto de [400000](limite) [esta semana](periodo)
+    - nuevo presupuesto [mercado del mes](nombre_presupuesto)
+    - presupuesto [navidad](nombre_presupuesto) con límite de [2 millones](limite)
+    - presupuesto [vacaciones](nombre_presupuesto) con limite de [1.500.000](limite)
+    - presupuesto [Navidad](nombre_presupuesto) con límite de [800 mil](limite)
+    - crea un presupuesto llamado [Navidad](nombre_presupuesto) de [500000](limite) para [diciembre](periodo)
+    - crea un presupuesto llamado [viaje](nombre_presupuesto) con un límite de [3 millones](limite)
+    - quiero crear el presupuesto [universidad](nombre_presupuesto) de [800 mil](limite) para [el próximo semestre](periodo)
+    - nuevo presupuesto [mercado](nombre_presupuesto) de [400000](limite) para [este mes](periodo)
+    - crear presupuesto [fiestas](nombre_presupuesto) por [1 millón](limite) para [diciembre](periodo)
+    - presupuesto de [700.000](limite) llamado [gastos de enero](nombre_presupuesto)
+    - crea un presupuesto con límite de [900000](limite) para [noviembre](periodo)
+    - necesito un presupuesto [casa](nombre_presupuesto) de [2.000.000](limite)
+    - quiero un presupuesto llamado [ahorro](nombre_presupuesto) por [300 mil](limite) para [el mes de febrero](periodo)
+    - crea el presupuesto [regalos](nombre_presupuesto) con [1.200.000](limite) para [diciembre](periodo)
+    - presupuesto [navidad](nombre_presupuesto) [2 millones](limite) [diciembre](periodo)
+    - crear presupuesto [cumpleaños](nombre_presupuesto) límite [350000](limite)
+    - define un presupuesto de [500 mil](limite) para [esta semana](periodo)
+    - ponme un presupuesto de [600000](limite) para [el próximo mes](periodo)
+    - crea un presupuesto de [1.500.000](limite)
+    - quiero un presupuesto [salidas](nombre_presupuesto) con límite de [200000](limite) para [este mes](periodo)
+    - presupuesto [moto](nombre_presupuesto) de [450000](limite)
+    - nuevo presupuesto llamado [deudas](nombre_presupuesto) de [1 millón](limite)
+    - crear presupuesto [viaje a la playa](nombre_presupuesto) con límite de [2.500.000](limite)
+    - crea presupuesto [Navidad](nombre_presupuesto) límite [2 millones](limite) para [diciembre](periodo)
+    - presupuesto [regalos de navidad](nombre_presupuesto) con límite de [1 millón](limite)
+    - quiero crear un presupuesto llamado [estudio](nombre_presupuesto) con límite de [750000](limite)
+
+- intent: activar_presupuesto
+  examples: |
+    - activa el presupuesto [Navidad](nombre_presupuesto)
+    - quiero activar mi presupuesto de [vacaciones](nombre_presupuesto)
+    - cambia mi presupuesto activo a [gastos de noviembre](nombre_presupuesto)
+    - usa el presupuesto [universidad](nombre_presupuesto)
+    - pon como activo el presupuesto [Navidad](nombre_presupuesto)
+    - quiero cambiar de presupuesto
+    - activar presupuesto
+    - ¿cómo activo otro presupuesto?
+    - selecciona el presupuesto [mercado del mes](nombre_presupuesto) como activo
+    - cambia el presupuesto activo
+
+- intent: consultar_presupuestos
+  examples: |
+    - muéstrame mis presupuestos
+    - ¿qué presupuestos tengo?
+    - lista de presupuestos
+    - ¿cuál es mi presupuesto activo?
+    - ver historial de presupuestos
+    - ¿cuántos presupuestos he creado?
+    - dime mis presupuestos creados
+    - ¿qué presupuesto tengo activo ahora?
+    - quiero ver mis presupuestos
+
+- intent: consultar_estado_presupuesto
+  examples: |
+    - ¿cuánto me queda del presupuesto?
+    - ¿cómo voy con mi presupuesto?
+    - ¿cuánto dinero me queda disponible?
+    - ¿cuánto puedo gastar por día?
+    - ¿cuántos días me quedan de mi presupuesto?
+    - ¿me estoy pasando del presupuesto?
+    - muéstrame el estado de mi presupuesto activo
+    - ¿cuánto me queda del presupuesto [Navidad](nombre_presupuesto)?
+    - ¿cómo va mi presupuesto de [vacaciones](nombre_presupuesto)?
+    - ¿ya gasté todo mi presupuesto?
+    - ¿qué porcentaje de mi presupuesto he usado?
+    - dime cuánto me falta para llegar al límite
+
+- intent: pedir_consejo_ahorro
+  examples: |
+    - dame un consejo para ahorrar
+    - ¿cómo puedo ahorrar más dinero?
+    - quiero gastar menos
+    - tips para ahorrar
+    - ¿cómo reduzco mis gastos?
+    - ayúdame a ahorrar
+    - ¿qué hago para no gastar tanto?
+    - recomiéndame cómo ahorrar
+    - necesito consejos de finanzas personales
+    - quiero controlar mis gastos hormiga
+
+
+- intent: informar_presupuesto
+  examples: |
+    - [Universidad](nombre_presupuesto)
+    - [Navidad](nombre_presupuesto)
+    - [500000](limite)
+    - [800000](limite)
+    - [200000](limite)
+    - [1.200.000](limite)
+    - [800 mil](limite)
+    - [30 mil](limite)
+    - [2026-12-01](fecha_inicio)
+    - [2026-12-04](fecha_inicio)
+    - [2026-12-31](fecha_fin)
+    - [2027-01-15](fecha_fin)
+    - [1 de diciembre de 2026](fecha_inicio)
+    - [31 de diciembre de 2026](fecha_fin)
+
+- intent: informar_consulta
+  examples: |
+    - [este mes](periodo)
+    - [esta semana](periodo)
+    - [hoy](periodo)
+    - [el mes pasado](periodo)
+    - [noviembre](periodo)
+    - [todas](categoria)
+    - [comida](categoria)
+    - [transporte](categoria)
+    - [mercado](categoria)
+    - [servicios](categoria)
+
+- lookup: categoria
+  examples: |
+    - comida
+    - transporte
+    - mercado
+    - servicios
+    - ocio
+    - salud
+    - educación
+    - otros
+
+- regex: cantidad_dinero
+  examples: |
+    - \d+([.,]\d+)*
+    - \d+\s?(mil|millon|millón|millones)
+
+
+
+- intent: informar_identificadores
+  examples: |
+    - [125](id_gasto)
+    - [40](id_gasto)
+    - [activo](estado_presupuesto)
+    - [inactivo](estado_presupuesto)
+
+- lookup: estado_presupuesto
+  examples: |
+    - activo
+    - inactivo

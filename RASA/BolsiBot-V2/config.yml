@@ -1,0 +1,42 @@
+# Configuración del asistente de gastos personales
+# https://rasa.com/docs/rasa/model-configuration/
+recipe: default.v1
+
+# Identificador único del asistente (puedes dejar el que Rasa generó)
+assistant_id: 20261107-214150-magenta-elbow
+
+# Idioma del asistente
+language: es
+
+# Pipeline de NLU (cómo se entienden los mensajes del usuario)
+pipeline:
+  - name: WhitespaceTokenizer
+  - name: RegexFeaturizer              # necesario para las listas "lookup" del nlu.yml
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+  - name: CountVectorsFeaturizer
+    analyzer: char_wb
+    min_ngram: 1
+    max_ngram: 4
+  - name: DIETClassifier               # detecta intents y entidades
+    epochs: 200
+    constrain_similarities: true
+  - name: EntitySynonymMapper
+  - name: ResponseSelector
+    epochs: 100
+    constrain_similarities: true
+  - name: FallbackClassifier           # activa la regla nlu_fallback ("no te entendí")
+    threshold: 0.3
+    ambiguity_threshold: 0.1
+
+# Políticas de Core (cómo decide el bot qué responder)
+policies:
+  - name: MemoizationPolicy
+  - name: RulePolicy                   # aplica las reglas de rules.yml
+  - name: UnexpecTEDIntentPolicy
+    max_history: 5
+    epochs: 100
+  - name: TEDPolicy
+    max_history: 5
+    epochs: 100
+    constrain_similarities: true

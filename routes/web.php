@@ -24,4 +24,9 @@ return [
     'GET /presupuesto/editar'      => [PresupuestoController::class, 'editar'],
     'POST /presupuesto/actualizar' => [PresupuestoController::class, 'actualizar'],
     'POST /presupuesto/eliminar'   => [PresupuestoController::class, 'eliminar'],
+
+    // Chatbot
+    'POST /asistente/mensaje'   => [BotController::class, 'mensaje'],
+    'POST /asistente/reiniciar' => [BotController::class, 'reiniciar'],
+    'GET /asistente/estado'     => [BotController::class, 'estado'],
 ];
